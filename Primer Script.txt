@@ -1,0 +1,71 @@
+#####Variables cualitativas#####
+#Creaciòn de una tabla de contingencia
+valores <-matrix(c(31914,190852,175186,71792,296499,268974),nrow=3,byrow=T)
+dimnames(valores)<-list(c("Big","Medium","Small"),c("Yes","No")) 
+datos<-data.frame(valores) 
+datos
+
+#Creación de gráfico 
+Yes <- c(31914,175186,296499)
+No <- c(190852,71792,268974)
+Big <- c(31914,190852)
+Medium <- c(175186,71792)
+Small <- c(296499,268974)
+Empresas <- c(Big, Medium,Small)
+barplot(Empresas)
+
+##############
+###Variables Cuantitaivas#####
+##Datos NO Agrupados##
+datos <- c(1.6,1.9,2.2,2.5,2.6,2.6,2.9,3,3,3.1,3.1,3.1,3.1,3.1,3.2,3.2,3.2,3.2,3.3,3.3,3.4,3.4,3.5,3.5,3.5,3.6,3.7,3.7,3.7,3.8,3.9,3.9,4.1,4.1,4.2)
+datos
+fa=table(datos)
+fa
+fr=round(prop.table(fa),2)
+fr
+Fa=cumsum(fa)
+Fa
+Fr=cumsum(fr)
+Fr
+tabla=cbind(fa,Fa,fr,Fr)
+tabla
+plot(datos)
+
+##Datos Agrupados##
+datos <- c(1.6,1.9,2.2,2.5,2.6,2.6,2.9,3,3,3.1,3.1,3.1,3.1,3.1,3.2,3.2,3.2,3.2,3.3,3.3,3.4,3.4,3.5,3.5,3.5,3.6,3.7,3.7,3.7,3.8,3.9,3.9,4.1,4.1,4.2)
+
+frec <- hist(datos, breaks=7, plot=F)
+frec
+mi <- frec$mids
+fa <- frec$counts
+fr <- round(frec$counts/sum(frec$counts),2)*100
+Fa <- cumsum(fa)
+Fr <- cumsum(fr)
+tabla=cbind(fa,Fa,fr,Fr,mi)
+tabla
+
+
+##medidas de tendencia central
+summary(datos)
+x <- mean(datos)
+
+##Medidas de dispersion 
+v <- var(datos)
+s <- sd(datos)
+
+li = x-s
+ls = x+s 
+
+cv =  (s/x)*100
+
+##gràficos 
+
+plot(datos)
+boxplot(datos)
+hist(datos)
+pie(fr)
+
+
+
+
+
