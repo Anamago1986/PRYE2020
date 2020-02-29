@@ -1,0 +1,70 @@
+###Páginas de interes###
+#http://www3.uah.es/marcos_marva/biologia1718/practicas/Practica05-2017-18-Simulaciones.html#combinatoria_con_r
+#https://rpubs.com/gabrielmartos/280574
+#http://www.revista.unam.mx/vol.14/num11/art44/art44.pdf
+#https://es.khanacademy.org/math/probability/probability-geometry/simulation-randomness/a/simulations-and-randomness-random-digit-tables
+#https://tereom.github.io/est-computacional-2018/simulacion-de-variables-aleatorias.html
+#https://tereom.github.io/est-computacional-2018/simulacion-para-el-calculo-de-probabilidades.html
+#https://rubenfcasal.github.io/simbook/ejercicios.html
+
+################################
+###Técnicas de conteo###
+library(gtools)
+matriz1 <- permutations(4,3)
+matriz1
+dim(matriz1)
+matriz2 <-combinations(4, 3)
+matriz2
+dim(matriz2)
+#Un detalle importante. Si quieres usar otros vectores como base de las 
+#permutaciones y combinaciones puedes hacerlo con un argumento adicional
+permutations(n = 4, r = 3, v = c("A", "T", "G", "C"))
+#Este último ejemplo nos lleva a la pregunta natural ¿y si quiero permitir repeticiones?
+permutations(n = 4, r = 3, v = c("A", "T", "G", "C"), repeats.allowed = TRUE)
+
+###Pobabilidad de experimentos Baby Mode###
+library(prob)
+#si queremos ver el espacio muestral del experimento de lanzar dos dados y sus probabilidades:
+tosscoin(2,makespace = T)
+#para conocer los valores de probabilidad para el lanzamiento de un dado:
+rolldie(1,makespace = T)
+#Si el experimento consiste en tirar 3 dados y queremos saber cuales son los eventos 
+#que verifican que la suma de los 3 dados es mayor que 16:
+subset(rolldie(3,makespace = T), X1 + X2 + X3 > 16)
+
+####################################
+###Simulación de números aleatorios
+#Aproximar el valor de  p mediante simulación a partir de 
+set.seed(1)
+n <- 10000
+x <- runif(n, -1, 1)
+y <- runif(n, -1, 1)
+indice <- (x^2+y^2 < 1)
+mean(indice)
+pi/4
+pi_aprox <- 4*mean(indice)
+pi_aprox
+
+#Colores y símbolos depediendo de si el índice correspondiente es verdadero:
+color <- ifelse(indice, "black", "red") 
+simbolo <- ifelse(indice, 1, 4)
+plot(x, y, pch = simbolo, col = color, 
+     xlim = c(-1, 1), ylim = c(-1, 1), xlab="X", ylab="Y", asp = 1) 
+     # asp = 1 para dibujar circulo
+symbols(0, 0, circles = 1, inches = FALSE, add = TRUE)
+symbols(0, 0, squares = 2, inches = FALSE, add = TRUE)
+
+####################################
+### Variables Aletorias Discretas (simulaciones)
+# uniforme discreta: donde n es el número de simulaciones y k el número de elementos
+runifD <- function(n = 1, k) floor(k * runif(n)) + 1
+# veamos un histograma de 1000 simulaciones de una distribución Uniforme
+# discreta con parámetro k = 20
+x <- runifD(n = 1000, k = 20)
+plot(x, binwidth = 1)
+barplot(x, binwidth = 1)
+
+
+
+
+
