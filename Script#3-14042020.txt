@@ -1,0 +1,113 @@
+#### Taller R - 3 #####
+
+
+#############################################
+############USO DE DISTRIBUCIONES MUESTRALES############
+
+#######Las que estamos viendo
+##Distribuciòn Normal
+#Para calcular la P(z<=a)
+pnorm(0.53,0,1,lower.tail=T)
+#Para calcular la P(z>a)
+pnorm(1.53,0,1,lower.tail=F)
+#Para calcular el valor cuantil asociado a una probabilidad de interès a izq
+qnorm(0.05,3,0.5,lower.tail=T)
+#Para calcular el valor cuantil asociado a una probabilidad de interès a der
+qnorm(0.05,0,1,lower.tail=F)
+qnorm(0.15,20,3.5,lower.tail=F)
+
+##Distribuciòn t-student
+#Para calcular la P(t<=a)
+pt(-2.9,23,lower.tail=T)
+#Para calcular la P(t>a)
+pt(1.5,21,lower.tail=T)
+#Para calcular el valor cuantil asociado a una probabilidad de interès a izq
+qt(0.05,2,lower.tail=T)
+#Para calcular el valor cuantil asociado a una probabilidad de interès a der
+qt(0.07,2,lower.tail=F)
+
+########Revisalas cuando las veamos
+##Distribuciòn ji-cuadrado
+#Para calcular la P(Chip<=a)
+pchisq(15,11,lower.tail=T)
+#Para calcular la P(Chip>a)
+pchisq(9.16,23,lower.tail=F)
+#Para calcular el valor cuantil asociado a una probabilidad de interès a izq
+qchisq(0.05,35,lower.tail=T)
+#Para calcular el valor cuantil asociado a una probabilidad de interès a der
+qchisq(0.67,21,lower.tail=F)
+
+##############################
+#######Teorema Central del Limite#########
+
+genera= function(dist,tamMuestra){
+if(dist=="binom"){
+ return(rbinom(tamMuestra,100,0.4))
+ } else{
+return(rnorm(tamMuestra,100))
+ }
+}
+
+## para definir las variables, cambia facilmente el tamaño de la muestra,
+# el númerp de muestras y el tipo de distribución.
+tamMuestra=1000
+numMuestras=60
+dist="binom"
+
+## INicia una matriz para almacenar las muestras generaas y un vector
+## para almacenar la media de cada muestra generada.
+Xij=matrix(,nrow=numMuestras, ncol=tamMuestra)
+mediax=vector()
+
+## Genera numMuestras muestras aleatorias
+##Para cad muestra, almacena la media en el vector anterior
+for(i in 1:numMuestras){
+ X=genera(dist,tamMuestra)
+ Xij[i,]=X
+ mediax[i]=mean(X)
+}
+
+#Muestra la media de las 6 últimas muestras generadas
+print(c(mediax[numMuestras],mediax[numMuestras-1],mediax[numMuestras-2],mediax[numMuestras-3],mediax[numMuestras-4],mediax[numMuestras-5]))
+
+## Muestra el histpgrama de las 6  últimas muestras generadas y de la media muestral
+par(mfrow=c(3,3))
+hist(Xij[numMuestras,],probability=T)
+hist(Xij[numMuestras-1,],probability=T)
+hist(Xij[numMuestras-2,],probability=T)
+hist(Xij[numMuestras-3,],probability=T)
+hist(Xij[numMuestras-4,],probability=T)
+hist(Xij[numMuestras-5,],probability=T)
+hist(mediax,probability=T)
+
+#################################################
+###Intervalo de confianza para la Media Poblacional con sigma conocido
+
+# El tamaño válido de la muestra
+n = 36    
+# la media 
+media.m = 2.6
+# La desviación estándar poblacional (CONOCIDA).
+desv.pob = 0.3  
+# Calculamos el error estándar
+error.est <- desv.pob/sqrt(n) 
+error.est 
+# Valor Z (porque la varianza poblacional es CONOCIDA) según Nivel de Confianza (Beta%)
+# Para este ejemplo nconf es 0.90 
+cuantil <- qnorm(0.025,0,1,lower.tail=F)
+cuantil
+# nivel de confianza de beta = 1 - alfa
+mgen.error <- cuantil * error.est 
+mgen.error
+
+# Límite inferior del intervalo
+lim.inf <- media.m  - mgen.error 
+lim.inf
+
+# Límite superior del intervalo
+lim.sup <- media.m  + mgen.error 
+lim.sup
+
+
+
+
